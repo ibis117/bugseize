@@ -1,0 +1,42 @@
+{
+    "name": "ibis117/bugseize",
+    "description": "Laravel error tracker",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sanil Nakarmi",
+            "email": "cresilsanil@gmail.com",
+            "homepage": "http://sanilnakarmi.com.np/"
+        }
+    ],
+    "homepage": "https://github.com/ibis117/bugseize",
+    "keywords": ["Laravel", "Bugseize"],
+    "require": {
+        "php": "^7.2 | ^8.0",
+        "illuminate/support": "^6.0 | ^7.0 | ^8.0 | ^9.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~9.0",
+        "orchestra/testbench": "~7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ibis117\\Bugseize\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ibis117\\Bugseize\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ibis117\\Bugseize\\BugseizeServiceProvider"
+            ],
+            "aliases": {
+                "Bugseize": "Ibis117\\Bugseize\\Facades\\Bugseize"
+            }
+        }
+    }
+}
