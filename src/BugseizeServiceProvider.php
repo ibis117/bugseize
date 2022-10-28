@@ -40,7 +40,7 @@ class BugseizeServiceProvider extends ServiceProvider
 
         // Register the service the package provides.
         $this->app->singleton('bugseize', function ($app) {
-            $client = new Client('', '');
+            $client = new Client();
             return new Bugseize($client);
         });
 

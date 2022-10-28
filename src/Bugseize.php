@@ -23,7 +23,6 @@ class Bugseize
 
     public function __construct(Client $client)
     {
-
         $this->client = $client;
     }
 
@@ -65,9 +64,9 @@ class Bugseize
 
 //        $count = config('larabug.lines_count');
         $count = 50;
-        if ($count > 50) {
-            $count = 12;
-        }
+//        if ($count > 50) {
+//            $count = 12;
+//        }
 
         $lines = file($data['file']);
         $data['executor'] = [];

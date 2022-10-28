@@ -15,26 +15,26 @@ class Client
      */
     private $token;
 
-    public function __construct(string $server, string $token)
+    public function __construct(string $server = null , string $token = null)
     {
 
-        $this->server = $server;
-        $this->token = $token;
+        $this->server = $server ?? config('bugseize.url');
+        $this->token = $token = config('bugseize.token');
     }
 
     public function report($data, $user = null)
     {
         $data = array_merge(['user' => $user], $data);
-
+        $url = trim($this->server, "/") . "/api/exceptions";
         try {
             return Http::withHeaders([
                 'X-BugSeize-Key' => $this->token,
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
-                'User-Agent' => 'BugSeize-Package'
-            ])->connectTimeout(15)
-                ->post($this->server, $data);
+                'User-Agent' => 'BugSeize-Package'])
+                ->post($url, $data);
         }catch (\Exception $e){
+            dd($e);
             return null;
         }
 
