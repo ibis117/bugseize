@@ -24,7 +24,10 @@ class Client
 
     public function report($data, $user = null)
     {
-        $data = array_merge(['user' => $user], $data);
+        $data = [
+            'user' => $user,
+            ...$data
+        ];
         $url = trim($this->server, "/") . "/api/exceptions";
         try {
             return Http::withHeaders([
@@ -33,8 +36,7 @@ class Client
                 'Accept' => 'application/json',
                 'User-Agent' => 'BugSeize-Package'])
                 ->post($url, $data);
-        }catch (\Exception $e){
-            dd($e);
+        } catch (\Exception $e){
             return null;
         }
 

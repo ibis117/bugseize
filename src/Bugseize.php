@@ -62,11 +62,10 @@ class Bugseize
         ];
         $data['storage'] = array_filter($data['storage']);
 
-//        $count = config('larabug.lines_count');
-        $count = 50;
-//        if ($count > 50) {
-//            $count = 12;
-//        }
+        $count = config('bugseize.lines_count');
+        if ($count > 50) {
+            $count = 12;
+        }
 
         $lines = file($data['file']);
         $data['executor'] = [];
@@ -78,10 +77,9 @@ class Bugseize
         for ($i = -1 * abs($count); $i <= abs($count); $i++) {
             $data['executor'][] = $this->getLineInfo($lines, $data['line'], $i);
         }
-        $data['executor'] = array_filter($data['executor']);
 
-        // Get project version
-        $data['project_version'] = config('larabug.project_version', null);
+        $data['executor'] = array_filter($data['executor']);
+        $data['project_version'] = config('bugseize.version');
 
         // to make symfony exception more readable
         if ($data['class'] == 'Symfony\Component\Debug\Exception\FatalErrorException') {
@@ -90,7 +88,6 @@ class Bugseize
                 $data['exception'] = $matches[1];
             }
         }
-
         return $data;
     }
 
