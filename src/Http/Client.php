@@ -2,6 +2,7 @@
 
 namespace Ibis117\Bugseize\Http;
 
+use GuzzleHttp\Promise\Utils;
 use Illuminate\Support\Facades\Http;
 
 class Client
@@ -30,12 +31,15 @@ class Client
         ];
         $url = trim($this->server, "/") . "/api/exceptions";
         try {
-            return Http::withHeaders([
+            $promise = Http::async()
+                ->timeout(config('bugseize.timeout'))
+                ->withHeaders([
                 'X-BugSeize-Key' => $this->token,
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
                 'User-Agent' => 'BugSeize-Package'])
                 ->post($url, $data);
+            $promise->wait();
         } catch (\Exception $e){
             return null;
         }

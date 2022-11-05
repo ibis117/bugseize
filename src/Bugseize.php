@@ -21,9 +21,20 @@ class Bugseize
      */
     private $client;
 
+    private static $instance;
+
     public function __construct(Client $client)
     {
         $this->client = $client;
+    }
+
+    public static function report($exception) {
+        if ( is_null( self::$instance ) )
+        {
+            self::$instance = new self;
+        }
+        $bugseize = self::$instance;
+        $bugseize->handle($exception);
     }
 
     // Build wonderful things
