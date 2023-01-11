@@ -5,8 +5,6 @@ namespace Ibis117\Bugseize;
 use Ibis117\Bugseize\Http\Client;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
@@ -26,12 +24,14 @@ class Bugseize
     public function __construct(Client $client)
     {
         $this->client = $client;
+        $this->blacklist = config('bugseize.blacklist');
     }
 
     public static function report($exception) {
         if ( is_null( self::$instance ) )
         {
-            self::$instance = new self;
+            $client = new Client();
+            self::$instance = new self($client);
         }
         $bugseize = self::$instance;
         $bugseize->handle($exception);
@@ -109,11 +109,11 @@ class Bugseize
                 if (is_array($val)) {
                     $variables[$key] = $this->filterVariables($val);
                 }
-//                foreach ($this->blacklist as $filter) {
-//                    if (Str::is($filter, strtolower($key))) {
-//                        $variables[$key] = '***';
-//                    }
-//                }
+                foreach ($this->blacklist as $filter) {
+                    if (Str::is($filter, strtolower($key))) {
+                        $variables[$key] = '***';
+                    }
+                }
             });
 
             return $variables;
